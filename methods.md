@@ -1,0 +1,15 @@
+he procedures of this workflow are showed (Figure 1) and available experimental methods or softwares are listed as well.
+\subsection*{Retrieve CAGE data}
+\hspace*{2em}Two CAGE datasets are retrieved for implementation of our work flow, one as described \cite{Meja-Guerra2015} from Mo17 shoots and roots RNA in \textit{Zea mays} using the same experimental methods \cite{Takahashi2012} with modification. The data and its description of this genome-wide mapping of TSS are accessible in NCBI's Gene Expression Omnibus \cite{Edgar2002} (\url{http://www.ncbi.nlm.nih.gov/geo/}).
+
+\subsection*{CAGE reads processing,alignment}
+\hspace*{2em}All four CAGE-adapted sequence reads (50bp) from Mo17 shoots and roots samples were aligned separately using bwa \cite{Li} to the  B73 RefGen\_v3 assembly \cite{Schnable}. Overall, $6.04 \times 10^{6}$ CAGE reads (1.2\% of the total) mapped successfully (Table 1) for subsequent analyses.
+
+\subsection*{Analysis of mapped CAGE tags}
+\hspace*{2em}With BAM files produced from BWA alignment, \textit{CAGEr} \cite{Haberle2015} constructs TSSs from aligned CAGE tags and counts the number of tags supporting each TSS. It further performs normalizaiton of raw CAGE tag count, clustering of TSSs into tag clusters (TC) and their aggregation across multiple CAGE experiments into promoters to construct the promoterome. (Figure 2)
+
+\hspace*{2em}Core promoter motifs for \textit{Z. mays} and \textit{H. sapiens} were discovered using Homer \cite{Heinz2010}. This procedure was performed as follows:first, CAGE peaks from alignments were identified. Next, we retrieved motifs that were enriched within 100bp sequences ([-60,+40]) surrounding the CAGE peaks relative to background (findMotifsGenome.pl). We searched for motifs of 6, 8, 10 and 12 bp, covering the typical size range of \textit{cis}-regulatory motifs.
+
+\hspace*{2em}Predicted core promoter motifs were determined using 10-fold cross-validation. The peak position tags were randomly splited into 10 groups of equal size. For each round of validation, one of the group was labeled as test set, and the remaining 9 groups were labeled as the training set. This process was iterated 10 times and \textit{De novo} motif prediction was performed on each of the ten training sets using Homer as descibed above. Then we checked the consistency of the motifs within all ten training sets with which a motif is found within a training set. A motif with statistical significance should be observed in all the 10 training sets, while a motif found only in few training sets is unlikely to be a core promoter motif. Predicted motifs from each of the ten training sets were grouped and clustered according to their pairwise distance (Pearson correlation coefficient) using Tomtom program \cite{Gupta2007}included in MEME Suite package \cite{Bailey07052015}. To cluster similar motifs within the training set, we generated a graph using python module "NetworkX" \cite{SciPyProceedings_11} with all motifs becoming the nodes and pairwise match in Tomtom output becoming undirected edges. Then we filtered connected components containing 9 or more nodes and selected corresponding motifs. 
+
+
